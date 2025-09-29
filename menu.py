@@ -1,4 +1,5 @@
 import pygame
 import engine.core
 
-def menu(nes_core: engine.core.Core)
+def menu(nes_core: engine.core.Core):
+	pass
