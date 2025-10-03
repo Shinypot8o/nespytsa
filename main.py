@@ -1,8 +1,11 @@
+from logging import DEBUG
 import engine
 import json
 import pygame
 import random
 import sys
+
+DEBUG = False
 
 HELP_MSG = """Available Commands:
 help
@@ -15,8 +18,9 @@ pygame.display.set_caption("NES Emulator")
 with open("config.json") as f:
 	config = json.load(f)
 
-with open("log.txt", "w") as f:
-	pass
+if DEBUG:
+	with open("log.txt", "w") as f:
+		pass
 	
 
 if len(sys.argv) == 2:
@@ -128,11 +132,6 @@ def frame_interrupt():
 	
 
 nes_core.interrupt = frame_interrupt
-
-
-for i in range(256):
-	if nes_core.cpu.OPCODE_ADDR_MAP[i] == 2:
-		print(f"{i:02X}: {i:08b}")
 
 
 nes_core.reset()
