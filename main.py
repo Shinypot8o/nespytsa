@@ -1,16 +1,11 @@
-from logging import DEBUG
 import engine
 import json
 import pygame
 import random
 import sys
 
-DEBUG = False
-
 HELP_MSG = """Available Commands:
 help
-memset <address> <value>
-memread <address>
 """
 
 pygame.display.set_caption("NES Emulator")
@@ -18,18 +13,11 @@ pygame.display.set_caption("NES Emulator")
 with open("config.json") as f:
 	config = json.load(f)
 
-if DEBUG:
-	with open("log.txt", "w") as f:
-		pass
-	
-
 if len(sys.argv) == 2:
 	cart_name = sys.argv[1]
-elif "cart" in config:
-	cart_name = config["cart"]
 else:
-	print("No cart specified, defaulting to mario.nes")
-	cart_name = "carts/mario.nes"
+	print("No cart specified, defaulting to nestest.nes")
+	cart_name = "carts/nestest.nes"
 
 print("Loading cart: " + cart_name)
 

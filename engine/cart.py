@@ -1,3 +1,5 @@
+import requests
+
 class Cart:
 	ROM_BANK_SIZE = 16384
 	ROM_BANK_SHIFT = 14
@@ -11,9 +13,13 @@ class Cart:
 	
 	def __init__(self, path):
 		
-		self.filepath = path
-		with open(self.filepath, "rb") as f:
-			raw_data = f.read()
+		self.resourcepath = path
+		if self.resourcepath.startswith("http://") or self.resourcepath.startswith("https://"):
+			response = requests.get(self.resourcepath)
+			raw_data = response.content
+		else:
+			with open(self.resourcepath, "rb") as f:
+				raw_data = f.read()
 
 		self.write_enable = False
 
@@ -51,7 +57,8 @@ class Cart:
 		)
 
 		self.version = control_2 >> 2 & 0b00000011
-		if self.version != 0: raise Exception("Unsupported version " + str(self.version))
+		if self.version != 0:
+			raise Exception("Unsupported version " + str(self.version))
 		
 		self.trainer_size = self.trainer_p << 9
 
