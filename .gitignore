@@ -1,6 +1,5 @@
 # custom ignores
-.*
-!.gitignore
+.*.nes
 
 
 # Byte-compiled / optimized / DLL files
