@@ -79,7 +79,7 @@ class Bus:
 		self.read_funcs = [eval(f"self.read_fun_{i}") for i in range(9)]
 	
 	def read_fun_0(self, addr): return self.memory[addr & 0b00000111_11111111]
-	def read_fun_1(self, addr): return self.cart.prg_rom[addr ^ 0x8000]
+	def read_fun_1(self, addr): return self.cart.read_rom(addr)
 	def read_fun_2(self, addr): return self.ppu.read_status()
 	def read_fun_3(self, addr): return self.ppu.oam_data[self.ppu.oam_addr]
 	def read_fun_4(self, addr): return self.ppu.read_data()
@@ -123,7 +123,7 @@ class Bus:
 	def write_fun_9(self, addr, value): self.controllers[0].write(value) if self.controllers[0] else None
 	def write_fun_10(self, addr, value): self.controllers[1].write(value) if self.controllers[1] else None
 	def write_fun_11(self, addr, value): self.mem_write(addr & 0b00100000_00000111, value)
-	def write_fun_12(self, addr, value): self.cart.write_prg_rom(addr ^ 0x8000, value)
+	def write_fun_12(self, addr, value): self.cart.write_rom(addr, value)
 	def write_fun_13(self, addr, value): pass
 
 	def mem_read(self, addr):
@@ -133,7 +133,7 @@ class Bus:
 		return read if read is not None else 0x00
 
 		if addr < 0x2000: return self.memory[addr & 0b00000111_11111111]
-		if 0x8000 <= addr < 0x10000: return self.cart.prg_rom[addr ^ 0x8000]
+		if 0x8000 <= addr < 0x10000: return self.cart.prg_rom[addr]
 		if addr == 0x2002: return self.ppu.read_status()
 		if addr == 0x2004: return self.ppu.read_oam_data()
 		if addr == 0x2007: return self.ppu.read_data()
@@ -169,7 +169,7 @@ class Bus:
 		elif addr == 0x4016: self.controllers[0].write(value) if self.controllers[0] else None
 		elif addr == 0x4017: self.controllers[1].write(value) if self.controllers[1] else None
 		elif 0x2008 <= addr < 0x4000: self.mem_write(addr & 0b00100000_00000111, value)
-		elif 0x8000 <= addr < 0x10000: self.cart.write_prg_rom(addr ^ 0x8000, value)
+		elif 0x8000 <= addr < 0x10000: self.cart.write_prg_rom(addr, value)
 		# elif addr == 0x2002: print("Attempted to write to read-only PPU address: " + hex(addr))
 		# else: print("Attempted to write to invalid memory location: " + hex(addr))
 	

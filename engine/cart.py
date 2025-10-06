@@ -1,10 +1,11 @@
 import requests
+from . import mappers
 
 class Cart:
 	ROM_BANK_SIZE = 16384
 	ROM_BANK_SHIFT = 14
-	VROM_BANK_SIZE = 8192
-	VROM_BANK_SHIFT = 13
+	chr_BANK_SIZE = 8192
+	chr_BANK_SHIFT = 13
 	
 	MIRROR_HORIZONTAL = 0
 	MIRROR_VERTICAL = 1
@@ -37,13 +38,13 @@ class Cart:
 		self.rom_bank_count = self.raw_header[4]
 		self.rom_size = self.rom_bank_count << Cart.ROM_BANK_SHIFT
 
-		self.vrom_bank_count = self.raw_header[5]
-		self.vrom_size = self.vrom_bank_count << Cart.VROM_BANK_SHIFT
+		self.chr_bank_count = self.raw_header[5]
+		self.chr_size = self.chr_bank_count << Cart.chr_BANK_SHIFT
 
 		control_1 = self.raw_header[6]
 		control_2 = self.raw_header[7]
 
-		self.mapper = control_1 >> 4 | control_2 & 0b11110000
+		self.mapperid = control_1 >> 4 | control_2 & 0b11110000
 
 		self.four_screen = 0 != control_1 & 0b00001000
 		self.trainer_p	 = 0 != control_1 & 0b00000100 # ignore for now
@@ -65,28 +66,31 @@ class Cart:
 		self.rom_start = 16 | self.trainer_size
 		self.rom_end = self.rom_start + self.rom_size
 
-		self.vrom_start = self.rom_end
-		self.vrom_end = self.vrom_start + self.vrom_size
+		self.chr_start = self.rom_end
+		self.chr_end = self.chr_start + self.chr_size
 
-		self.prg_rom = raw_data[self.rom_start:self.rom_end]
-		if self.rom_size == Cart.ROM_BANK_SIZE:
-			self.prg_rom = self.prg_rom + self.prg_rom
+		self.rom_banks = []
+		self.chr_banks = []
 
-		self.chr_rom = raw_data[self.vrom_start:self.vrom_end]
+		for i in range(self.rom_bank_count):
+			start = self.rom_start + i * Cart.ROM_BANK_SIZE
+			end = start + Cart.ROM_BANK_SIZE
+			self.rom_banks.append(raw_data[start:end])
 		
-		self.prg_rom = bytearray(self.prg_rom)
-		self.chr_rom = bytearray(self.chr_rom)
+		for i in range(self.chr_bank_count):
+			start = self.chr_start + i * Cart.chr_BANK_SIZE
+			end = start + Cart.chr_BANK_SIZE
+			self.chr_banks.append(raw_data[start:end])
+		
+		self.mapper = mappers.mappers.get(self.mapperid, None)
+		if self.mapper is None:
+			raise Exception("Unsupported mapper " + str(self.mapperid))
+		self.mapper = self.mapper(self.rom_banks, self.chr_banks)
+
+		self.read_rom = self.mapper.read_rom
+		self.write_rom = self.mapper.write_rom
+		self.read_chr = self.mapper.read_chr
+		self.write_chr = self.mapper.write_chr
 		
 		print("rom loaded!")
 		print(f"mapper: {self.mapper}")
-	
-	def read_prg_rom(self, addr):
-		return self.prg_rom[addr]
-	
-	def write_prg_rom(self, addr, value):
-		if self.write_enable:
-			self.prg_rom[addr] = value
-		else:
-			pass
-		#	 print("Attempted to write to read-only Cartridge PRG ROM address: " + hex(addr))
-		

@@ -128,7 +128,7 @@ class Frame:
 			tile_mem = bank | (tile_idx << 4)
 	
 			self.render_nt_tile(
-				ppu.chr_rom[tile_mem : tile_mem + 16],
+				[ppu.read_chr(addr) for addr in range(tile_mem, tile_mem + 16)],
 				self.bg_palette(ppu, attribute_table, tile_col, tile_row),
 				tile_col << 3, tile_row << 3,
 				viewport, shift_x, shift_y,
@@ -163,7 +163,7 @@ class Frame:
 			tile_pos = ppu.ctrl_sprt_pattern_addr() + (tile_idx << 4)
 
 			self.blit_tile(
-				ppu.chr_rom[tile_pos : tile_pos + 16],
+				[ppu.read_chr(addr) for addr in range(tile_pos, tile_pos + 16)],
 				self.sprite_palette(ppu, attr & 0b00000011),
 				ppu.oam_data[i | 3], ppu.oam_data[i], tile_idx,
 				(attr & 0b01000000 != 0, attr & 0b10000000 != 0)

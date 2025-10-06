@@ -252,7 +252,7 @@ class CPU:
 	def def_oper_address(self):
 		self.oper_address = [eval("self.oper_addr_" + s) for s in CPU.OP_ADDR_STRINGS]
 	
-	def oper_addr_Implied(self):		 return print("bad operand address")																		# Implied
+	def oper_addr_Implied(self): print("bad operand address"); return 0																# Implied
 	def oper_addr_Immediate(self):	 return self.pc																												 # Immediate
 	def oper_addr_ZeroPage(self):		return self.mem_read(self.pc)																					# ZeroPage
 	def oper_addr_Absolute(self):		return self.mem_read_16(self.pc)																			 # Absolute
@@ -262,7 +262,7 @@ class CPU:
 	def oper_addr_AbsoluteY(self):	 return self.mem_read_16(self.pc) + self.y & 0xffff										 # AbsoluteY
 	def oper_addr_IndirectX(self):	 return self.mem_read_16_wrap(self.mem_read(self.pc) + self.x & 0xff)	 # IndirectX
 	def oper_addr_IndirectY(self):	 return self.mem_read_16_wrap(self.mem_read(self.pc)) + self.y & 0xffff # IndirectY
-	def oper_addr_Accumulator(self): return print("bad operand address")																		# Accumulator
+	def oper_addr_Accumulator(self): print("bad operand address") ; return 0															# Accumulator
 	def oper_addr_Indirect(self):		return self.mem_read_16_wrap(self.mem_read_16(self.pc))								# Indirect
 
 	def set_flags(self, value):

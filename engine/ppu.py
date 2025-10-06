@@ -18,7 +18,6 @@ class PPU:
 		
 		self.frame = frame
 
-		self.chr_rom = bytearray(2048)
 		self.mirroring_type = Cart.MIRROR_HORIZONTAL
 		self.mirroring = MIRROR_TYPES[self.mirroring_type]
 		
@@ -288,7 +287,7 @@ class PPU:
 		self.addr_inc(self.ctrl_vram_addr_inc())
 
 		if 0x0000 <= addr < 0x2000:
-			return self.use_buffer(self.chr_rom[addr])
+			return self.use_buffer(self.read_chr(addr))
 
 		elif 0x2000 <= addr < 0x3000:
 			return self.use_buffer(self.vram[(self.mirroring[addr - NAMETABLE_ADDR >> 10] << 10) + (addr & 0x3ff)])
@@ -313,12 +312,12 @@ class PPU:
 		return out
 	
 	def attach_cart(self, cart: Cart):
-		self.chr_rom = cart.chr_rom
+		self.read_chr = cart.read_chr
 		self.mirroring_type = cart.screen_mirroring
 		self.mirroring = MIRROR_TYPES[self.mirroring_type]
 
 	def detach_cart(self):
-		# self.chr_rom = bytearray(2048)
+		self.read_chr = lambda addr: 0
 		self.mirroring_type = Cart.MIRROR_HORIZONTAL
 		self.mirroring = MIRROR_TYPES[self.mirroring_type]
 		
