@@ -7,19 +7,26 @@ class Mapper0():
 		assert 0 <= self.rom_bank_count <= 2
 		assert 0 <= self.chr_bank_count <= 1
 
+		if self.rom_bank_count == 1:
+			self.rom = rom_banks[0] + rom_banks[0]
+		else:
+			self.rom = rom_banks[0] + rom_banks[1]
+		
+		if self.chr_bank_count == 1:
+			self.chr = chr_banks[0]
+		else:
+			self.chr = bytes([0 for _ in range(0x2000)])
+
 	def read_rom(self, addr):
-		if self.rom_bank_count == 1: # 16KB ROM
-			return self.rom_banks[0][addr & 0x3FFF]
-		else: # 32KB ROM
-			return self.rom_banks[(addr & 0x4000) >> 14][addr & 0x3FFF]
+		return self.rom[addr - 0x8000]
 
 	def write_rom(self, addr, value):
 		pass
 
 	def read_chr(self, addr):
-		if self.chr_bank_count == 0:
-			return 0
-		return self.chr_banks[0][addr]
+		return self.chr[addr]
 
 	def write_chr(self, addr, value):
+		# Mapper 0 can have CHR-RAM, but this implementation assumes CHR-ROM.
+		# For CHR-ROM, writes are ignored.
 		pass

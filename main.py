@@ -128,5 +128,4 @@ while keep_running:
 	nes_core.run_without_reset()
 	frame_interrupt()
 	nes_core.reset()
-	nes_core.cpu.save_log()
 	# nes_core.cpu.dump()
