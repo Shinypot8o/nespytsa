@@ -22,19 +22,4 @@ class Mapper0():
 		return self.chr_banks[0][addr]
 
 	def write_chr(self, addr, value):
-		# Mapper 0 can have CHR-RAM, but this implementation assumes CHR-ROM.
-		# For CHR-ROM, writes are ignored.
 		pass
-		if 0x0000 <= addr <= 0x1FFF:
-			return self.chr_banks[0][addr]
-		else:
-			return 0
-
-	def write_chr(self, addr, value):
-		# Mapper 0 can have CHR-RAM, but this implementation assumes CHR-ROM.
-		# For CHR-ROM, writes are ignored.
-		pass
-		if 0x0000 <= addr <= 0x1FFF:
-			return self.chr_banks[0][addr]
-		else:
-			return 0

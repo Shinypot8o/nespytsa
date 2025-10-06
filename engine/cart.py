@@ -93,4 +93,4 @@ class Cart:
 		self.write_chr = self.mapper.write_chr
 		
 		print("rom loaded!")
-		print(f"mapper: {self.mapper}")
+		print(f"mapper: {self.mapperid}")
