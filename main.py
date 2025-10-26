@@ -1,4 +1,4 @@
-#!venv/bin/python3
+#!venv/bin/python
 
 import engine
 import json
@@ -7,7 +7,7 @@ import random
 import sys
 
 HELP_MSG = """Available Commands:
-help
+	help
 """
 
 pygame.display.set_caption("NES Emulator")
@@ -106,6 +106,51 @@ def frame_interrupt():
 						saves[0].save(nes_core)
 					else:
 						saves[0].load(nes_core)
+				case pygame.K_2:
+					if keys[pygame.K_LSHIFT] or keys[pygame.K_RSHIFT]:
+						saves[1].save(nes_core)
+					else:
+						saves[1].load(nes_core)
+				case pygame.K_3:
+					if keys[pygame.K_LSHIFT] or keys[pygame.K_RSHIFT]:
+						saves[2].save(nes_core)
+					else:
+						saves[2].load(nes_core)
+				case pygame.K_4:
+					if keys[pygame.K_LSHIFT] or keys[pygame.K_RSHIFT]:
+						saves[3].save(nes_core)
+					else:
+						saves[3].load(nes_core)
+				case pygame.K_5:
+					if keys[pygame.K_LSHIFT] or keys[pygame.K_RSHIFT]:
+						saves[4].save(nes_core)
+					else:
+						saves[4].load(nes_core)
+				case pygame.K_6:
+					if keys[pygame.K_LSHIFT] or keys[pygame.K_RSHIFT]:
+						saves[5].save(nes_core)
+					else:
+						saves[5].load(nes_core)
+				case pygame.K_7:
+					if keys[pygame.K_LSHIFT] or keys[pygame.K_RSHIFT]:
+						saves[6].save(nes_core)
+					else:
+						saves[6].load(nes_core)
+				case pygame.K_8:
+					if keys[pygame.K_LSHIFT] or keys[pygame.K_RSHIFT]:
+						saves[7].save(nes_core)
+					else:
+						saves[7].load(nes_core)
+				case pygame.K_9:
+					if keys[pygame.K_LSHIFT] or keys[pygame.K_RSHIFT]:
+						saves[8].save(nes_core)
+					else:
+						saves[8].load(nes_core)
+				case pygame.K_0:
+					if keys[pygame.K_LSHIFT] or keys[pygame.K_RSHIFT]:
+						saves[9].save(nes_core)
+					else:
+						saves[9].load(nes_core)
 
 			
 	

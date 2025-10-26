@@ -636,7 +636,6 @@ class CPU:
 		self.a = self.y
 		self._set_zn_flags(self.a)
 
-
 	# * Unofficial opcode functions ---------------
 
 	def _aac(self, mode):
@@ -760,17 +759,16 @@ class CPU:
 		self.single_opcode(self.opcode)
 
 	def reset(self):
-		self.a = 0
-		self.x = 0
-		self.y = 0
-		self.sp = 0xfd
-		# self.pc = 0xC000
+		# self.a = 0
+		# self.x = 0
+		# self.y = 0
+		self.sp = (self.sp - 3) & 0xff
 		self.pc = self.mem_read_16(CPU.INT_ADDR[CPU.RESET])
-		self.set_flags(0b00100100)
+		self.flag_I = True
 		self.ticks = 0
 		self.cycles = 0
 		self.killed = False
-		self.opcode = 0x00
+		# self.opcode = 0x00
 		self.interrupts = 0
 		self.cycles_wait = 7
 
@@ -811,9 +809,6 @@ class CPU:
 
 			# print(self.log_line())
 
-			if self.pc == 0x0600:
-				raise Exception()
-
 			self.opcode = self.mem_read(self.pc)
 			self.pc = self.pc + 1 & 0xffff
 			
@@ -829,7 +824,6 @@ class CPU:
 			self._opcode_cycles()
 
 			self.ticks += 1
-
 
 	def single_opcode(self, opcode):
 		self.opcode_funcs[opcode]()
