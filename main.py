@@ -1,3 +1,5 @@
+#!venv/bin/python3
+
 import engine
 import json
 import pygame
@@ -33,13 +35,13 @@ saves = [engine.Save() for i in range(10)]
 
 def button_state(keys):
 	return (
-		keys[pygame.K_s]         << 0 |
-		keys[pygame.K_a]         << 1 |
-		keys[pygame.K_q]         << 2 |
-		keys[pygame.K_w]         << 3 |
-		keys[pygame.K_UP]        << 4 |
-		keys[pygame.K_DOWN]    << 5 |
-		keys[pygame.K_LEFT]    << 6 |
+		keys[pygame.K_s]     << 0 |
+		keys[pygame.K_a]     << 1 |
+		keys[pygame.K_q]     << 2 |
+		keys[pygame.K_w]     << 3 |
+		keys[pygame.K_UP]    << 4 |
+		keys[pygame.K_DOWN]  << 5 |
+		keys[pygame.K_LEFT]  << 6 |
 		keys[pygame.K_RIGHT] << 7
 	)
 

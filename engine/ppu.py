@@ -271,13 +271,13 @@ class PPU:
 			self.palette[addr & 0x1f] = data
 		
 		### elif 0x3000 <= addr < 0x3f00:
-		###	 print(f"PPU address {hex(addr)} is not supported")
+		### 	print(f"PPU address {hex(addr)} is not supported")
 		
 		### elif 0x0000 <= addr < 0x2000:
-		###	 print(f"Attempted to write to CHR ROM space: {hex(addr)}")
+		### 	print(f"Attempted to write to CHR ROM space: {hex(addr)}")
 		
 		### else:
-		###	 print("Unexpected access to mirrored address: " + hex(addr))
+		### 	print("Unexpected access to mirrored address: " + hex(addr))
 
 		self.addr_inc(self.ctrl_vram_addr_inc())
 
@@ -295,11 +295,11 @@ class PPU:
 			return self.palette[addr & 0x1f]
 		
 		### elif 0x3000 <= addr <= 0x3eff:
-		###	 print(f"PPU address {hex(addr)} is not supported")
+		### 	print(f"PPU address {hex(addr)} is not supported")
 		
 		### else:
-		###	 print("Unexpected access to mirrored address: " + hex(addr))
-	
+		### 	print("Unexpected access to mirrored address: " + hex(addr))
+
 	def write_oam_dma(self, data):
 		self.oam_data = (
 			data[self.oam_addr:] +

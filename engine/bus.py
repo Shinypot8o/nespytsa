@@ -12,32 +12,32 @@ class Bus:
 
 	def __init__(self, ppu: PPU):
 
-		#	_______________ $10000	_______________
-		# | PRG-ROM			 |			 |							 |
-		# | Upper Bank		|			 |							 |
-		# |_ _ _ _ _ _ _ _| $C000 | PRG-ROM			 |
-		# | PRG-ROM			 |			 |							 |
-		# | Lower Bank		|			 |							 |
+		#  _______________  $10000 _______________
+		# | PRG-ROM       |       |               |
+		# | Upper Bank    |       |               |
+		# |_ _ _ _ _ _ _ _| $C000 | PRG-ROM       |
+		# | PRG-ROM       |       |               |
+		# | Lower Bank    |       |               |
 		# |_______________| $8000 |_______________|
-		# | SRAM					|			 | SRAM					|
+		# | SRAM          |       | SRAM          |
 		# |_______________| $6000 |_______________|
-		# | Expansion ROM |			 | Expansion ROM |
+		# | Expansion ROM |       | Expansion ROM |
 		# |_______________| $4020 |_______________|
-		# | I/O Registers |			 |							 |
-		# |_ _ _ _ _ _ _ _| $4000 |							 |
-		# | Mirrors			 |			 | I/O Registers |
-		# | $2000-$2007	 |			 |							 |
-		# |_ _ _ _ _ _ _ _| $2008 |							 |
-		# | I/O Registers |			 |							 |
+		# | I/O Registers |       |               |
+		# |_ _ _ _ _ _ _ _| $4000 |               |
+		# | Mirrors       |       | I/O Registers |
+		# | $2000-$2007   |       |               |
+		# |_ _ _ _ _ _ _ _| $2008 |               |
+		# | I/O Registers |       |               |
 		# |_______________| $2000 |_______________|
-		# | Mirrors			 |			 |							 |
-		# | $0000-$07FF	 |			 |							 |
-		# |_ _ _ _ _ _ _ _| $0800 |							 |
-		# | RAM					 |			 | RAM					 |
-		# |_ _ _ _ _ _ _ _| $0200 |							 |
-		# | Stack				 |			 |							 |
-		# |_ _ _ _ _ _ _ _| $0100 |							 |
-		# | Zero Page		 |			 |							 |
+		# | Mirrors       |       |               |
+		# | $0000-$07FF   |       |               |
+		# |_ _ _ _ _ _ _ _| $0800 |               |
+		# | RAM           |       | RAM           |
+		# |_ _ _ _ _ _ _ _| $0200 |               |
+		# | Stack         |       |               |
+		# |_ _ _ _ _ _ _ _| $0100 |               |
+		# | Zero Page     |       |               |
 		# |_______________| $0000 |_______________|
 
 
@@ -143,10 +143,10 @@ class Bus:
 		if 0x4000 <= addr < 0x4016: return 0
 		
 		# if addr in [0x2000, 0x2001, 0x2003, 0x2005, 0x2006, 0x4014]:
-		#	 print("Attempted to read from write-only PPU address: " + hex(addr))
+		#	print("Attempted to read from write-only PPU address: " + hex(addr))
 		
 		# else:
-		#	 print("Attempted to read from invalid memory location: " + hex(addr))
+		#	print("Attempted to read from invalid memory location: " + hex(addr))
 		
 		return 0x00
 
