@@ -1,4 +1,4 @@
-class Mapper0():
+class NROM():
 	def __init__(self, rom_banks, chr_banks):
 		self.rom_banks = rom_banks
 		self.chr_banks = chr_banks
@@ -7,10 +7,8 @@ class Mapper0():
 		assert 0 <= self.rom_bank_count <= 2
 		assert 0 <= self.chr_bank_count <= 1
 
-		if self.rom_bank_count == 1:
-			self.rom = rom_banks[0] + rom_banks[0]
-		else:
-			self.rom = rom_banks[0] + rom_banks[1]
+		# mirrors the one or combines the 2
+		self.rom = rom_banks[0] + rom_banks[-1]
 		
 		if self.chr_bank_count == 1:
 			self.chr = chr_banks[0]

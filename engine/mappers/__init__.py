@@ -1,7 +1,7 @@
-from .mapper0 import Mapper0
+from .nrom import NROM
 
 
 
 mappers = {
-	0: Mapper0,
+	0: NROM,
 }
