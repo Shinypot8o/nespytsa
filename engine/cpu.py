@@ -765,6 +765,7 @@ class CPU:
 		self.sp = (self.sp - 3) & 0xff
 		self.pc = self.mem_read_16(CPU.INT_ADDR[CPU.RESET])
 		self.flag_I = True
+		self.flag_U = True
 		self.ticks = 0
 		self.cycles = 0
 		self.killed = False
@@ -781,14 +782,23 @@ class CPU:
 			f.write("\n".join(self.log))
 	
 	def log_line(self):
-		# C000  4C F5 C5  JMP  A:00 X:00 Y:00 P:24 SP:FD PPU:  0, 21 CYC:7
-		return f"{self.pc:04X}	{self.opcode:02X} " +\
-			(f"{self.mem_read(self.pc + 1 & 0xffff):02X} " if CPU.OPCODE_SIZE_MAP[self.opcode] > 1 else "	 ") +\
-			(f"{self.mem_read(self.pc + 2 & 0xffff):02X}	" if CPU.OPCODE_SIZE_MAP[self.opcode] > 2 else "		") +\
-			CPU.OPCODE_NAMES_MAP[self.opcode] + "	" +\
-			f"A:{self.a:02X} X:{self.x:02X} Y:{self.y:02X} P:{self.get_flags():08b} " +\
-			f"SP:{self.sp:02X} PPU:{" " * (3 - len(str(self.bus.ppu.scanline)))}{self.bus.ppu.scanline}," +\
-			f"{" " * (3 - len(str(self.bus.ppu.cycles)))}{self.bus.ppu.cycles} CYC:{self.cycles}"
+		# # C000  4C F5 C5  JMP  A:00 X:00 Y:00 P:24 SP:FD PPU:  0, 21 CYC:7
+		# return f"{self.pc:04X}	{self.opcode:02X} " +\
+		# 	(f"{self.mem_read(self.pc + 1 & 0xffff):02X} " if CPU.OPCODE_SIZE_MAP[self.opcode] > 1 else "	 ") +\
+		# 	(f"{self.mem_read(self.pc + 2 & 0xffff):02X}	" if CPU.OPCODE_SIZE_MAP[self.opcode] > 2 else "		") +\
+		# 	CPU.OPCODE_NAMES_MAP[self.opcode] + "	" +\
+		# 	f"A:{self.a:02X} X:{self.x:02X} Y:{self.y:02X} P:{self.get_flags():08b} " +\
+		# 	f"SP:{self.sp:02X} PPU:{" " * (3 - len(str(self.bus.ppu.scanline)))}{self.bus.ppu.scanline}," +\
+		# 	f"{" " * (3 - len(str(self.bus.ppu.cycles)))}{self.bus.ppu.cycles} CYC:{self.cycles}"
+		
+		# C000 4C F5 C5 JMP a:00 x:00 y:00 p:00100100 sp:FD
+		return f"{self.pc - 1 & 0xffff:04X} " +\
+			f"{self.opcode:02X} " +\
+			(f"{self.mem_read(self.pc & 0xffff):02X} " if CPU.OPCODE_SIZE_MAP[self.opcode] > 1 else "   ") +\
+			(f"{self.mem_read(self.pc + 1 & 0xffff):02X} " if CPU.OPCODE_SIZE_MAP[self.opcode] > 2 else "   ") +\
+			CPU.OPCODE_NAMES_MAP[self.opcode] + " " +\
+			f"a:{self.a:02X} x:{self.x:02X} y:{self.y:02X} sp:{self.sp:02X}"
+			
 	
 	def run(self, frame_interrupt=None):
 		
@@ -807,10 +817,11 @@ class CPU:
 					self.bus.frames += 1
 				frame_interrupt()
 
-			# print(self.log_line())
-
 			self.opcode = self.mem_read(self.pc)
 			self.pc = self.pc + 1 & 0xffff
+			
+			# with open("cpu.log", "a") as f:
+			# 	f.write(self.log_line() + "\n")
 			
 			# self.op_timer = time.time_ns()
 			
