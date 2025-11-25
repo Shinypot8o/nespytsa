@@ -1,4 +1,3 @@
-import requests
 from . import mappers
 
 class Cart:
@@ -16,6 +15,7 @@ class Cart:
 		
 		self.resourcepath = path
 		if self.resourcepath.startswith("http://") or self.resourcepath.startswith("https://"):
+			import requests
 			response = requests.get(self.resourcepath)
 			raw_data = response.content
 		else:
