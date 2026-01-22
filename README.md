@@ -9,4 +9,5 @@ An NES emulator made with python and pygame
 
 ### Todo
 * accurate cycle emulation
-* 
+* apu
+* more mappers (currently only 0)
